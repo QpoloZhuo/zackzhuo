@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZACK ZHUO - 視覺創作者</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-black: #0a0a0a;
+            --soft-white: #fafafa;
+            --muted-blue: #e8eef5;
+            --accent-blue: #4a5568;
+            --light-gray: #f7f8fa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            background: var(--soft-white);
+            overflow-x: hidden;
+        }
+
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 4rem;
+            background: rgba(250, 250, 250, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            color: var(--primary-black);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-black);
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--muted-blue) 0%, var(--soft-white) 100%);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease forwards 0.5s;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            font-weight: 200;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease forwards 0.8s;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease forwards 1.1s;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 8rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        /* Portfolio Section */
+        .portfolio-categories {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: none;
+            border: 1px solid var(--primary-black);
+            padding: 0.8rem 2rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary-black);
+            color: var(--soft-white);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            aspect-ratio: 4/5;
+            background: var(--light-gray);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.02);
+        }
+
+        .portfolio-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(74, 85, 104, 0.1) 0%, rgba(232, 238, 245, 0.3) 100%);
+            z-index: 1;
+        }
+
+        .portfolio-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.4rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            z-index: 3;
+            border-radius: 20px;
+        }
+
+        .portfolio-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(10, 10, 10, 0.8));
+            color: white;
+            z-index: 2;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover .portfolio-info {
+            transform: translateY(0);
+        }
+
+        .portfolio-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-client {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .about-image {
+            aspect-ratio: 3/4;
+            background: var(--muted-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            right: -2rem;
+            bottom: -2rem;
+            border: 1px solid var(--accent-blue);
+            z-index: -1;
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .client-logo {
+            height: 60px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .client-logo:hover {
+            opacity: 1;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .service-item {
+            padding: 3rem 2rem;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+
+        .service-title {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            list-style: none;
+            margin-bottom: 3rem;
+        }
+
+        .contact-links li {
+            margin-bottom: 1rem;
+        }
+
+        .contact-links a {
+            color: var(--primary-black);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 300;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Portfolio Detail Page */
+        .portfolio-detail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--soft-white);
+            z-index: 2000;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .portfolio-detail.active {
+            transform: translateX(0);
+        }
+
+        .detail-header {
+            position: sticky;
+            top: 0;
+            background: rgba(250, 250, 250, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 4rem;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 100;
+        }
+
+        .detail-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-black);
+            transition: opacity 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 0.6;
+        }
+
+        .detail-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+
+        .detail-hero {
+            margin-bottom: 4rem;
+        }
+
+        .detail-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .detail-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .detail-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+        }
+
+        .detail-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--muted-blue);
+            margin-bottom: 3rem;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .detail-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-bottom: 3rem;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .detail-video iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .detail-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .spec-item h4 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        .spec-item p {
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-black);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100vh;
+            background: var(--soft-white);
+            z-index: 1001;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu .nav-links {
+            flex-direction: column;
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .mobile-menu .nav-links a {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .mobile-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--primary-black);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem 2rem;
+                background: rgba(250, 250, 250, 0.98);
+            }
+
+            .nav-content {
+                position: relative;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            .hero {
+                padding-top: 4rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .hero-description {
+                font-size: 0.9rem;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            .section-title {
+                font-size: clamp(2rem, 8vw, 3rem);
+                margin-bottom: 3rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .portfolio-item {
+                min-height: 300px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .portfolio-categories {
+                gap: 0.8rem;
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .category-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.8rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .service-item {
+                padding: 2rem 1.5rem;
+            }
+
+            .clients-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .client-logo {
+                height: 50px;
+                font-size: 0.7rem;
+            }
+
+            .about-image::before {
+                top: 1rem;
+                left: 1rem;
+                right: -1rem;
+                bottom: -1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .detail-header {
+                padding: 1.5rem 2rem;
+            }
+
+            .detail-content {
+                padding: 3rem 2rem 6rem;
+            }
+
+            .detail-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .detail-specs {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav {
+                padding: 0.8rem 1.5rem;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .portfolio-categories {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .service-item {
+                padding: 1.5rem 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .detail-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .detail-content {
+                padding: 2rem 1.5rem 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo serif">ZACK ZHUO</div>
+            <ul class="nav-links">
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#portfolio">作品</a></li>
+                <li><a href="#about">關於</a></li>
+                <li><a href="#services">服務</a></li>
+                <li><a href="#contact">聯繫</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <button class="mobile-close">✕</button>
+            <ul class="nav-links">
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#portfolio">作品</a></li>
+                <li><a href="#about">關於</a></li>
+                <li><a href="#services">服務</a></li>
+                <li><a href="#contact">聯繫</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title serif">用鏡頭捕捉每個珍貴瞬間</h1>
+            <p class="hero-subtitle">視覺創作者</p>
+            <p class="hero-description">
+                透過影像與動態，為品牌創造獨特的視覺語言，<br>
+                讓每一個故事都能深刻觸動人心。
+            </p>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section">
+        <h2 class="section-title serif fade-in">作品集</h2>
+        
+        <div class="portfolio-categories fade-in">
+            <button class="category-btn active" data-category="all">全部</button>
+            <button class="category-btn" data-category="event">活動紀實</button>
+            <button class="category-btn" data-category="brand">品牌影像</button>
+            <button class="category-btn" data-category="social">社群短影音</button>
+        </div>
+
+        <div class="portfolio-grid fade-in">
+            <div class="portfolio-item" data-category="event">
+                <img src="https://drive.google.com/uc?export=view&id=1kZW4C5yXqh8YjL1BbL2tTIY-2d7Hoycb" alt="Web3國際產業峰會" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='圖片載入中...'; this.style.display='none'; this.parentElement.style.background='linear-gradient(45deg, #e8eef5 0%, #f7f8fa 100%)';">
+                <div class="portfolio-tag">PHOTO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">Web3國際產業峰會</h3>
+                    <p class="portfolio-client">集思交通部會議中心</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="event">
+                <img src="https://drive.google.com/uc?export=view&id=1fHOkM9-M64PFVfbPdG0G730Q5wEURYYa" alt="虛擬資產大未來論壇" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='圖片載入中...'; this.style.display='none'; this.parentElement.style.background='linear-gradient(45deg, #e8eef5 0%, #f7f8fa 100%)';">
+                <div class="portfolio-tag">PHOTO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">虛擬資產大未來論壇</h3>
+                    <p class="portfolio-client">華南銀行總行國際會議中心</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="event">
+                <img src="https://drive.google.com/uc?export=view&id=1iOuXF73N2JGvM0oceEM8uw4BtABMwmAq" alt="LIPS尾牙活動" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='圖片載入中...'; this.style.display='none'; this.parentElement.style.background='linear-gradient(45deg, #e8eef5 0%, #f7f8fa 100%)';">
+                <div class="portfolio-tag">PHOTO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">LIPS尾牙活動</h3>
+                    <p class="portfolio-client">88號樂章</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="event">
+                <img src="https://drive.google.com/uc?export=view&id=1KYez-FpbfiRkOG_8enEMduxNhg--mJWS" alt="TBW區塊鏈新聞採訪" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='圖片載入中...'; this.style.display='none'; this.parentElement.style.background='linear-gradient(45deg, #e8eef5 0%, #f7f8fa 100%)';">
+                <div class="portfolio-tag">PHOTO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">TBW區塊鏈新聞採訪</h3>
+                    <p class="portfolio-client">松菸</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="brand" style="background: linear-gradient(45deg, #1a1a1a 0%, #333 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                <div class="portfolio-tag">VIDEO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">BENZ 行銷影片</h3>
+                    <p class="portfolio-client">品牌行銷影片後製</p>
+                </div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; opacity: 0.3;">▶</div>
+            </div>
+            <div class="portfolio-item" data-category="brand" style="background: linear-gradient(45deg, #2d1810 0%, #8b4513 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                <div class="portfolio-tag">VIDEO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">裸鑽雪莉</h3>
+                    <p class="portfolio-client">品牌行銷影片後製</p>
+                </div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; opacity: 0.3;">▶</div>
+            </div>
+            <div class="portfolio-item" data-category="social" style="background: linear-gradient(45deg, #0f0f23 0%, #1a1a3a 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                <div class="portfolio-tag">VIDEO</div>
+                <div class="portfolio-info">
+                    <h3 class="portfolio-title serif">NONE LAND</h3>
+                    <p class="portfolio-client">社群短影音製作</p>
+                </div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; opacity: 0.3;">▶</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="section-title serif fade-in">關於我</h2>
+        
+        <div class="about-content fade-in">
+            <div class="about-text">
+                <p class="serif" style="font-size: 1.3rem; margin-bottom: 2rem;">
+                    "每一個畫面都是一個故事，每一個故事都值得被完美呈現。"
+                </p>
+                <p>
+                    專精於品牌視覺內容創作，從活動紀實到社群短影音，我致力於為每個品牌打造獨特的視覺語言。透過細膩的構圖與後製技術，將品牌理念轉化為具有感染力的視覺作品。
+                </p>
+                <p style="margin-top: 1.5rem;">
+                    以台北為據點，服務範圍涵蓋全台，擅長結合東方美學與現代設計思維，創造出既具商業價值又富有藝術性的影像內容。
+                </p>
+            </div>
+            <div class="about-image">
+                <img id="aboutPhoto" alt="ZACK ZHUO" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.style.background='var(--muted-blue)';">
+            </div>
+        </div>
+
+        <div class="clients-grid fade-in">
+            <div class="client-logo">Web3 峰會</div>
+            <div class="client-logo">虛擬資產論壇</div>
+            <div class="client-logo">LIPS</div>
+            <div class="client-logo">TBW</div>
+            <div class="client-logo">BENZ</div>
+            <div class="client-logo">裸鑽雪莉</div>
+            <div class="client-logo">NONE LAND</div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <h2 class="section-title serif fade-in">服務項目</h2>
+        
+        <div class="services-grid fade-in">
+            <div class="service-item">
+                <h3 class="service-title serif">活動紀實攝影</h3>
+                <p class="service-description">
+                    專業記錄論壇、品牌發表會、展覽與派對等重要時刻，以細膩的視角捕捉每個珍貴瞬間，為品牌留下深刻印象。
+                </p>
+            </div>
+            <div class="service-item">
+                <h3 class="service-title serif">品牌影像後製</h3>
+                <p class="service-description">
+                    從概念發想到成品交付，提供專業的影片後製服務，包括動態設計與各平台的 Resize 調整，提升品牌視覺層次與市場競爭力。
+                </p>
+            </div>
+            <div class="service-item">
+                <h3 class="service-title serif">社群短影音製作</h3>
+                <p class="service-description">
+                    提供完整的社群影片企劃、腳本、拍攝、後製服務，結合網路流行迷因與品牌調性，創造最大化的社群影響力。
+                </p>
+            </div>
+            <div class="service-item">
+                <h3 class="service-title serif">內容企劃與創意</h3>
+                <p class="service-description">
+                    提供完整的創意解決方案，包含腳本撰寫、現場拍攝、後製剪輯與動畫設計，確保每個作品都達到最高品質標準。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="section-title serif fade-in">聯繫合作</h2>
+        
+        <div class="contact-content fade-in">
+            <div class="contact-info">
+                <h3 class="serif">讓我們一起創造精彩作品</h3>
+                <ul class="contact-links">
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.8rem; vertical-align: middle;">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <a href="mailto:tmd834@gmail.com">tmd834@gmail.com</a>
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.8rem; vertical-align: middle;">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="m16 11.37-4-4-4 4"></path>
+                            <path d="M21 16.5l-3.5-3.5-3.5 3.5"></path>
+                        </svg>
+                        <a href="https://instagram.com/qpolo010" target="_blank">@qpolo010</a>
+                    </li>
+                </ul>
+                <p style="font-size: 0.9rem; opacity: 0.7; line-height: 1.6;">
+                    服務範圍：雙北地區<br>
+                    以台北為據點<br>
+                    24小時內回覆
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Detail Page -->
+    <div class="portfolio-detail" id="portfolioDetail">
+        <div class="detail-header">
+            <div class="detail-nav">
+                <button class="back-btn">← 返回作品集</button>
+                <div class="logo serif">ZACK ZHUO</div>
+            </div>
+        </div>
+        
+        <div class="detail-content">
+            <div class="detail-hero">
+                <h1 class="detail-title serif" id="detailTitle">Web3國際產業峰會</h1>
+                <div class="detail-meta">
+                    <span id="detailClient">集思交通部會議中心</span>
+                    <span id="detailCategory">活動紀實</span>
+                    <span id="detailType">PHOTO</span>
+                </div>
+                <p class="detail-description" id="detailDescription">
+                    專業記錄Web3國際產業峰會的重要時刻，捕捉業界領袖們的精彩演講與互動討論。透過多角度拍攝與細膩的構圖，完整呈現了峰會的專業氛圍與重要時刻。
+                </p>
+            </div>
+            
+            <div class="detail-images" id="detailImages">
+                <!-- Images will be dynamically loaded here -->
+            </div>
+            
+            <div class="detail-specs">
+                <div class="spec-item">
+                    <h4>拍攝時間</h4>
+                    <p id="detailTime">2025年7月</p>
+                </div>
+                <div class="spec-item">
+                    <h4>拍攝地點</h4>
+                    <p id="detailLocation">集思交通部會議中心</p>
+                </div>
+                <div class="spec-item">
+                    <h4>作品類型</h4>
+                    <p id="detailTypeSpec">活動紀實攝影</p>
+                </div>
+                <div class="spec-item">
+                    <h4>使用設備</h4>
+                    <p id="detailEquipment">Sony ILCE-7M4</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileClose = document.querySelector('.mobile-close');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        mobileClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Portfolio filtering
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const category = btn.getAttribute('data-category');
+
+                portfolioItems.forEach(item => {
+                    if (category === 'all' || item.getAttribute('data-category') === category) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeInUp 0.6s ease forwards';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navigation background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(250, 250, 250, 0.98)';
+            } else {
+                nav.style.background = 'rgba(250, 250, 250, 0.95)';
+            }
+        });
+
+        // Portfolio data with real content
+        const portfolioData = {
+            'web3-summit': {
+                title: 'Web3國際產業峰會',
+                client: '集思交通部會議中心國際會議廳',
+                category: '活動紀實',
+                type: 'PHOTO',
+                time: '2025年7月',
+                location: '集思交通部會議中心國際會議廳',
+                equipment: 'Sony ILCE-7M4',
+                description: '專業記錄Web3國際產業峰會的重要時刻，捕捉業界領袖們的精彩演講與互動討論。透過多角度拍攝與細膩的構圖，完整呈現了峰會的專業氛圍與重要時刻。',
+                images: [
+                    'https://drive.google.com/uc?export=view&id=1kZW4C5yXqh8YjL1BbL2tTIY-2d7Hoycb',
+                    'https://drive.google.com/uc?export=view&id=1q3hamGOUbO-8TaGnJOSU3n4fS8yZ63Il',
+                    'https://drive.google.com/uc?export=view&id=1_yLAZsd-PFbenNyH9F8yK3BKOagV3O9I',
+                    'https://drive.google.com/uc?export=view&id=1Wu3inYckCn_zBIiF6QZrSD18hvoNtBIO'
+                ]
+            },
+            'virtual-asset-forum': {
+                title: '虛擬資產大未來論壇',
+                client: '華南銀行總行國際會議中心主會議廳',
+                category: '活動紀實',
+                type: 'PHOTO',
+                time: '2025年7月',
+                location: '華南銀行總行國際會議中心主會議廳',
+                equipment: 'Sony ILCE-7M4',
+                description: '記錄虛擬資產大未來論壇的專業討論與重要發表，透過專業攝影技術捕捉與會者的專注神情與會議的重要時刻。',
+                images: [
+                    'https://drive.google.com/uc?export=view&id=1fHOkM9-M64PFVfbPdG0G730Q5wEURYYa',
+                    'https://drive.google.com/uc?export=view&id=1TgqSgREFE01FEpf-WPgP0l1ClivsCSb1',
+                    'https://drive.google.com/uc?export=view&id=1sgKaFKKgxcj8RM4kv3xc6vXeTBhRp2fy',
+                    'https://drive.google.com/uc?export=view&id=1XyPivXe_XjuKVPcGne0wxmx0MxfSZSmW'
+                ]
+            },
+            'lips-party': {
+                title: 'LIPS尾牙活動',
+                client: '88號樂章',
+                category: '活動紀實',
+                type: 'PHOTO',
+                time: '2025年1月',
+                location: '88號樂章',
+                equipment: 'Sony ILCE-7M4',
+                description: '記錄LIPS公司尾牙活動的歡樂時光，捕捉員工們的開心笑容與精彩表演，為公司留下珍貴的回憶。',
+                images: [
+                    'https://drive.google.com/uc?export=view&id=1iOuXF73N2JGvM0oceEM8uw4BtABMwmAq',
+                    'https://drive.google.com/uc?export=view&id=1cjRH0i39LfelhoPehNXSUnMG3_7yPxAD',
+                    'https://drive.google.com/uc?export=view&id=1f8cezwnaYrPdn-ic73K8WD0FmIlz8IG1'
+                ]
+            },
+            'tbw-interview': {
+                title: 'TBW區塊鏈新聞採訪',
+                client: '松菸',
+                category: '活動紀實',
+                type: 'PHOTO',
+                time: '2024年12月',
+                location: '松菸',
+                equipment: 'Sony ILCE-7M4',
+                description: 'TBW區塊鏈新聞採訪活動的專業記錄，捕捉受訪者的專業形象與採訪現場的氛圍，為媒體提供高品質的新聞素材。',
+                images: [
+                    'https://drive.google.com/uc?export=view&id=1KYez-FpbfiRkOG_8enEMduxNhg--mJWS',
+                    'https://drive.google.com/uc?export=view&id=1LmUWyiuh7ZGoQvrueRmGp23kKZyCKe94',
+                    'https://drive.google.com/uc?export=view&id=1AOXjC_qW4YXlnTGSvsYm-S_u3Y4BN4U8',
+                    'https://drive.google.com/uc?export=view&id=1sRQX8I_SeuyXxM7ftT9MTG7nK1cAaYFK',
+                    'https://drive.google.com/uc?export=view&id=1RZvan57XaBP2_Uaexaz99HU20LjnCJQ0',
+                    'https://drive.google.com/uc?export=view&id=1eDCakDx_FaIMDIUCR6LiQSONI-agJql5'
+                ]
+            },
+            'benz-marketing': {
+                title: 'BENZ 行銷影片',
+                client: '品牌行銷影片後製',
+                category: '品牌影像',
+                type: 'VIDEO',
+                time: '2023年',
+                location: '後製工作室',
+                equipment: '後製軟體',
+                description: '負責BENZ品牌行銷影片的影片後製，包括動態設計與各平台的Resize調整，確保品牌形象在不同平台上的一致性與專業度。',
+                videos: [
+                    'https://drive.google.com/uc?export=view&id=1lGcjaKBxG_DBog86qKDdKlT76J-lTj-Z',
+                    'https://drive.google.com/uc?export=view&id=1mMJV7WmaUUSl8q6lTx7qn2UeNAQN-JS0',
+                    'https://drive.google.com/uc?export=view&id=15D-XRh_4Lo9S4hZm3vIsPdGqvWfPMLLk',
+                    'https://drive.google.com/uc?export=view&id=1BD9eCOqhxSvbInF9LVp58Q0yMqigf6eT'
+                ]
+            },
+            'naked-diamond': {
+                title: '裸鑽雪莉',
+                client: '品牌行銷影片後製',
+                category: '品牌影像',
+                type: 'VIDEO',
+                time: '2023年',
+                location: '後製工作室',
+                equipment: '後製軟體',
+                description: '負責裸鑽雪莉品牌行銷影片的影片後製，包括動態設計與各平台的Resize調整，提升品牌的視覺質感與市場競爭力。',
+                videos: [
+                    'https://drive.google.com/uc?export=view&id=1zY1hZkM0rBMzbd0BhMMlSWCx9d6sJLn7',
+                    'https://drive.google.com/uc?export=view&id=1QOmECMzfu2U6mUhoOFEbvbOCDp3Pur-w',
+                    'https://drive.google.com/uc?export=view&id=1I6yNCPcgEOskenGTukFvQwtB7WCcb99H',
+                    'https://drive.google.com/uc?export=view&id=1hvSfc1zJkysU1Eyvi6oTVF90B7IJldRd'
+                ]
+            },
+            'none-land': {
+                title: 'NONE LAND',
+                client: '社群短影音製作',
+                category: '社群短影音',
+                type: 'VIDEO',
+                time: '2024年',
+                location: '創作工作室',
+                equipment: '拍攝與後製設備',
+                description: '負責NONE LAND社群影片的影片企劃、腳本、拍攝、影片後製，幫助平台成長2萬粉絲，製作網路流行迷因與區塊鏈項目的介紹影片。',
+                videos: [
+                    'https://drive.google.com/uc?export=view&id=1jr9v6BzA1CiR-ZMw2oglb90_KrOzMPfM',
+                    'https://drive.google.com/uc?export=view&id=1UdqsHFHmekT7wSZCufY6Es-RO2jIazP6'
+                ]
+            }
+        };
+
+        // Portfolio item click for detail view
+        portfolioItems.forEach((item, index) => {
+            const itemKeys = Object.keys(portfolioData);
+            const itemId = itemKeys[index];
+            
+            item.addEventListener('click', () => {
+                const data = portfolioData[itemId];
+                if (data) {
+                    // Update detail page content
+                    document.getElementById('detailTitle').textContent = data.title;
+                    document.getElementById('detailClient').textContent = data.client;
+                    document.getElementById('detailCategory').textContent = data.category;
+                    document.getElementById('detailType').textContent = data.type;
+                    document.getElementById('detailDescription').textContent = data.description;
+                    document.getElementById('detailTime').textContent = data.time;
+                    document.getElementById('detailLocation').textContent = data.location;
+                    document.getElementById('detailEquipment').textContent = data.equipment;
+                    document.getElementById('detailTypeSpec').textContent = data.category;
+                    
+                    // Clear and populate images/videos
+                    const detailImages = document.getElementById('detailImages');
+                    detailImages.innerHTML = '';
+                    
+                    if (data.images) {
+                        data.images.forEach(imageUrl => {
+                            const imageDiv = document.createElement('div');
+                            imageDiv.className = 'detail-image';
+                            
+                            const img = document.createElement('img');
+                            img.src = imageUrl;
+                            img.alt = data.title;
+                            img.style.width = '100%';
+                            img.style.height = '100%';
+                            img.style.objectFit = 'cover';
+                            img.onerror = function() {
+                                this.style.display = 'none';
+                                imageDiv.style.background = 'var(--muted-blue)';
+                                imageDiv.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666;">圖片載入中...</div>';
+                            };
+                            
+                            imageDiv.appendChild(img);
+                            detailImages.appendChild(imageDiv);
+                        });
+                    }
+                    
+                    if (data.videos) {
+                        data.videos.forEach(videoUrl => {
+                            const videoDiv = document.createElement('div');
+                            videoDiv.className = 'detail-video';
+                            videoDiv.innerHTML = `
+                                <video controls style="width: 100%; height: 100%;">
+                                    <source src="${videoUrl}" type="video/mp4">
+                                    您的瀏覽器不支援影片播放
+                                </video>
+                            `;
+                            detailImages.appendChild(videoDiv);
+                        });
+                    }
+                    
+                    // Show detail page
+                    document.getElementById('portfolioDetail').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Back button functionality
+        document.querySelector('.back-btn').addEventListener('click', () => {
+            document.getElementById('portfolioDetail').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Load user's photo
+        async function loadUserPhoto() {
+            try {
+                const photoData = await window.fs.readFile('2024-12-23 18-46-43.jpg');
+                const blob = new Blob([photoData], { type: 'image/jpeg' });
+                const photoUrl = URL.createObjectURL(blob);
+                const aboutPhoto = document.getElementById('aboutPhoto');
+                if (aboutPhoto) {
+                    aboutPhoto.src = photoUrl;
+                }
+            } catch (error) {
+                console.log('無法載入用戶照片，使用預設圖片');
+                // 如果無法載入用戶照片，保持原有的處理方式
+            }
+        }
+
+        // 頁面載入完成後載入照片
+        document.addEventListener('DOMContentLoaded', loadUserPhoto);
+    </script>
+</body>
+</html>
