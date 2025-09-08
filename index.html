@@ -1224,9 +1224,13 @@
                             img.style.height = '100%';
                             img.style.objectFit = 'cover';
                             img.onerror = function() {
+                                console.log('圖片載入失敗:', imageUrl);
                                 this.style.display = 'none';
                                 imageDiv.style.background = 'var(--muted-blue)';
-                                imageDiv.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666;">圖片載入中...</div>';
+                                imageDiv.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666;">圖片載入失敗</div>';
+                            };
+                            img.onload = function() {
+                                console.log('圖片載入成功:', imageUrl);
                             };
                             
                             imageDiv.appendChild(img);
