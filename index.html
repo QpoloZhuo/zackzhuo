@@ -1260,25 +1260,6 @@
             document.getElementById('portfolioDetail').classList.remove('active');
             document.body.style.overflow = 'auto';
         });
-
-        // Load user's photo
-        async function loadUserPhoto() {
-            try {
-                const photoData = await window.fs.readFile('2024-12-23 18-46-43.jpg');
-                const blob = new Blob([photoData], { type: 'image/jpeg' });
-                const photoUrl = URL.createObjectURL(blob);
-                const aboutPhoto = document.getElementById('aboutPhoto');
-                if (aboutPhoto) {
-                    aboutPhoto.src = photoUrl;
-                }
-            } catch (error) {
-                console.log('無法載入用戶照片，使用預設圖片');
-                // 如果無法載入用戶照片，保持原有的處理方式
-            }
-        }
-
-        // 頁面載入完成後載入照片
-        document.addEventListener('DOMContentLoaded', loadUserPhoto);
     </script>
 </body>
 </html>
